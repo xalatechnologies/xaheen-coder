@@ -156,7 +156,7 @@ def merge_existing_build(
     """
     Merge an existing build into the project using intent-aware merge.
 
-    Called when user runs: python auto-claude/run.py --spec X --merge
+    Called when user runs: python xaheen/run.py --spec X --merge
 
     This uses the MergeOrchestrator to:
     1. Analyze semantic changes from the task
@@ -182,7 +182,7 @@ def merge_existing_build(
         print_status(f"No existing build found for '{spec_name}'.", "warning")
         print()
         print("To start a new build:")
-        print(highlight(f"  python auto-claude/run.py --spec {spec_name}"))
+        print(highlight(f"  python xaheen/run.py --spec {spec_name}"))
         return False
 
     # Detect current branch - this is where user wants changes merged

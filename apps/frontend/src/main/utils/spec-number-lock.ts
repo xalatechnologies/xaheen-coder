@@ -34,7 +34,7 @@ export class SpecNumberLock {
 
   constructor(projectDir: string) {
     this.projectDir = projectDir;
-    this.lockDir = path.join(projectDir, '.auto-claude', '.locks');
+    this.lockDir = path.join(projectDir, '.xaheen', '.locks');
     this.lockFile = path.join(this.lockDir, 'spec-numbering.lock');
   }
 
@@ -154,7 +154,7 @@ export class SpecNumberLock {
     maxNumber = Math.max(maxNumber, this.scanSpecsDir(mainSpecsDir));
 
     // 2. Scan all worktree specs
-    const worktreesDir = path.join(this.projectDir, '.auto-claude', 'worktrees', 'tasks');
+    const worktreesDir = path.join(this.projectDir, '.xaheen', 'worktrees', 'tasks');
     if (existsSync(worktreesDir)) {
       try {
         const worktrees = readdirSync(worktreesDir, { withFileTypes: true });

@@ -25,7 +25,7 @@ import { parseEnvFile } from './utils';
 const settingsPath = getSettingsPath();
 
 /**
- * Auto-detect the auto-claude source path relative to the app location.
+ * Auto-detect the xaheen source path relative to the app location.
  * Works across platforms (macOS, Windows, Linux) in both dev and production modes.
  */
 const detectAutoBuildSourcePath = (): string | null => {
@@ -71,7 +71,7 @@ const detectAutoBuildSourcePath = (): string | null => {
 
   for (const p of possiblePaths) {
     // Use runners/spec_runner.py as marker - this is the file actually needed for task execution
-    // This prevents matching legacy 'auto-claude/' directories that don't have the runners
+    // This prevents matching legacy 'xaheen/' directories that don't have the runners
     const markerPath = path.join(p, 'runners', 'spec_runner.py');
     const exists = existsSync(p) && existsSync(markerPath);
 

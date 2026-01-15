@@ -58,7 +58,7 @@ export class ChangelogService extends EventEmitter {
 
   /**
    * Check if debug mode is enabled
-   * Checks DEBUG from auto-claude/.env and DEBUG from process.env
+   * Checks DEBUG from xaheen/.env and DEBUG from process.env
    */
   private isDebugEnabled(): boolean {
     // Cache the result after first check
@@ -84,7 +84,7 @@ export class ChangelogService extends EventEmitter {
   }
 
   /**
-   * Debug logging - only logs when DEBUG=true in auto-claude/.env or DEBUG is set
+   * Debug logging - only logs when DEBUG=true in xaheen/.env or DEBUG is set
    */
   private debug(...args: unknown[]): void {
     if (this.isDebugEnabled()) {
@@ -114,7 +114,7 @@ export class ChangelogService extends EventEmitter {
   }
 
   /**
-   * Get the auto-claude source path (detects automatically if not configured)
+   * Get the xaheen source path (detects automatically if not configured)
    */
   private getAutoBuildSourcePath(): string | null {
     if (this.autoBuildSourcePath && existsSync(this.autoBuildSourcePath)) {
@@ -137,7 +137,7 @@ export class ChangelogService extends EventEmitter {
   }
 
   /**
-   * Load environment variables from auto-claude .env file
+   * Load environment variables from xaheen .env file
    */
   private loadAutoBuildEnv(): Record<string, string> {
     const autoBuildSource = this.getAutoBuildSourcePath();

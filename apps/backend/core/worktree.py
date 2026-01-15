@@ -4,8 +4,8 @@ Git Worktree Manager - Per-Spec Architecture
 =============================================
 
 Each spec gets its own worktree:
-- Worktree path: .auto-claude/worktrees/tasks/{spec-name}/
-- Branch name: auto-claude/{spec-name}
+- Worktree path: .xaheen/worktrees/tasks/{spec-name}/
+- Branch name: xaheen/{spec-name}
 
 This allows:
 1. Multiple specs to be worked on simultaneously
@@ -168,8 +168,8 @@ class WorktreeManager:
     """
     Manages per-spec Git worktrees.
 
-    Each spec gets its own worktree in .auto-claude/worktrees/tasks/{spec-name}/ with
-    a corresponding branch auto-claude/{spec-name}.
+    Each spec gets its own worktree in .xaheen/worktrees/tasks/{spec-name}/ with
+    a corresponding branch xaheen/{spec-name}.
     """
 
     # Timeout constants for subprocess operations
@@ -180,7 +180,7 @@ class WorktreeManager:
     def __init__(self, project_dir: Path, base_branch: str | None = None):
         self.project_dir = project_dir
         self.base_branch = base_branch or self._detect_base_branch()
-        self.worktrees_dir = project_dir / ".auto-claude" / "worktrees" / "tasks"
+        self.worktrees_dir = project_dir / ".xaheen" / "worktrees" / "tasks"
         self._merge_lock = asyncio.Lock()
 
     def _detect_base_branch(self) -> str:
@@ -255,10 +255,10 @@ class WorktreeManager:
     def _unstage_gitignored_files(self) -> None:
         """
         Unstage any staged files that are gitignored in the current branch,
-        plus any files in the .auto-claude directory which should never be merged.
+        plus any files in the .xaheen directory which should never be merged.
 
         This is needed after a --no-commit merge because files that exist in the
-        source branch (like spec files in .auto-claude/specs/) get staged even if
+        source branch (like spec files in .xaheen/specs/) get staged even if
         they're gitignored in the target branch.
         """
         # Get list of staged files
@@ -284,9 +284,9 @@ class WorktreeManager:
                 if file.strip():
                     files_to_unstage.add(file.strip())
 
-        # 2. Always unstage .auto-claude directory files - these are project-specific
+        # 2. Always unstage .xaheen directory files - these are project-specific
         # and should never be merged from the worktree branch
-        auto_claude_patterns = [".auto-claude/", "auto-claude/specs/"]
+        auto_claude_patterns = [".xaheen/", "xaheen/specs/"]
         for file in staged_files:
             file = file.strip()
             if not file:

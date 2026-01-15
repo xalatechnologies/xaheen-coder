@@ -13,14 +13,14 @@ Key Features:
 - Linear integration for project management
 
 Usage:
-    python auto-claude/run.py --spec 001-initial-app
-    python auto-claude/run.py --spec 001
-    python auto-claude/run.py --list
+    python xaheen/run.py --spec 001-initial-app
+    python xaheen/run.py --spec 001
+    python xaheen/run.py --list
 
     # Workspace management
-    python auto-claude/run.py --spec 001 --merge     # Add completed build to project
-    python auto-claude/run.py --spec 001 --review    # See what was built
-    python auto-claude/run.py --spec 001 --discard   # Delete build (requires confirmation)
+    python xaheen/run.py --spec 001 --merge     # Add completed build to project
+    python xaheen/run.py --spec 001 --review    # See what was built
+    python xaheen/run.py --spec 001 --discard   # Delete build (requires confirmation)
 
 Prerequisites:
     - CLAUDE_CODE_OAUTH_TOKEN environment variable set (run: claude setup-token)

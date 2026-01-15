@@ -237,7 +237,7 @@ export function registerProjectHandlers(
       // If a folder was deleted, reset autoBuildPath so UI prompts for reinitialization
       const resetIds = projectStore.validateProjects();
       if (resetIds.length > 0) {
-        console.warn('[IPC] PROJECT_LIST: Detected missing .auto-claude folders for', resetIds.length, 'project(s)');
+        console.warn('[IPC] PROJECT_LIST: Detected missing .xaheen folders for', resetIds.length, 'project(s)');
       }
 
       const projects = projectStore.getProjects();
@@ -348,7 +348,7 @@ export function registerProjectHandlers(
 
         if (result.success) {
           // Update project's autoBuildPath
-          projectStore.updateAutoBuildPath(projectId, '.auto-claude');
+          projectStore.updateAutoBuildPath(projectId, '.xaheen');
         }
 
         return { success: result.success, data: result, error: result.error };
