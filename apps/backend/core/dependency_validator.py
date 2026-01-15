@@ -34,7 +34,7 @@ def _exit_with_pywin32_error() -> None:
     sys.exit(
         "Error: Required Windows dependency 'pywin32' is not installed.\n"
         "\n"
-        "Auto Claude requires pywin32 on Windows for LadybugDB/Graphiti memory integration.\n"
+        "Xaheen requires pywin32 on Windows for LadybugDB/Graphiti memory integration.\n"
         "\n"
         "To fix this:\n"
         "1. Activate your virtual environment:\n"

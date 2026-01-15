@@ -1,6 +1,6 @@
-# Auto Claude Guides
+# Xaheen Guides
 
-Detailed documentation for Auto Claude setup and usage.
+Detailed documentation for Xaheen setup and usage.
 
 ## Available Guides
 

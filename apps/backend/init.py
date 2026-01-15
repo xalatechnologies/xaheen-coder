@@ -1,5 +1,5 @@
 """
-Auto Claude project initialization utilities.
+Xaheen project initialization utilities.
 
 Handles first-time setup of .xaheen directory and ensures proper gitignore configuration.
 """

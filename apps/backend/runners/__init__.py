@@ -2,7 +2,7 @@
 Runners Module
 ==============
 
-Standalone runners for various Auto Claude capabilities.
+Standalone runners for various Xaheen capabilities.
 Each runner can be invoked from CLI or programmatically.
 """
 

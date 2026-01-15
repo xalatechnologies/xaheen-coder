@@ -361,8 +361,8 @@ jobs:
             ]);
 
             const IDENTIFIER_PATTERNS = Object.freeze([
-              '🤖 Auto Claude PR Review',
-              'Auto Claude Review',
+              '🤖 Xaheen PR Review',
+              'Xaheen Review',
               'Auto-Claude Review'
             ]);
 
@@ -370,7 +370,7 @@ jobs:
             // Using \s* instead of .* and requiring specific emoji + verdict format
             const VERDICTS = Object.freeze({
               APPROVED: {
-                patterns: ['Auto Claude Review - APPROVED', '✅ Auto Claude Review - APPROVED'],
+                patterns: ['Xaheen Review - APPROVED', '✅ Xaheen Review - APPROVED'],
                 // Match: "Merge Verdict:" followed by whitespace/emoji, then ✅, then APPROVED/READY TO MERGE
                 regex: /Merge Verdict:\s*✅\s*(?:APPROVED|READY TO MERGE)/i,
                 label: 'AC: Approved'

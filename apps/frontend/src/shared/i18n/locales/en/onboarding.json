@@ -79,7 +79,7 @@
   "memory": {
     "title": "Memory",
     "description": "Configure persistent cross-session memory for agents",
-    "contextDescription": "Auto Claude Memory helps remember context across your coding sessions",
+    "contextDescription": "Xaheen Memory helps remember context across your coding sessions",
     "enableMemory": "Enable Memory",
     "enableMemoryDescription": "Persistent cross-session memory using LadybugDB (embedded database)",
     "memoryDisabledInfo": "Memory is disabled. Session insights will be stored in local files only. Enable Memory for persistent cross-session context with semantic search.",
