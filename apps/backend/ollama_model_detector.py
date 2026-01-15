@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Ollama Model Detector for auto-claude-ui.
+Ollama Model Detector for xaheen-ui.
 
 Queries the Ollama API to detect available models, specifically focusing on
 embedding models for semantic search functionality.

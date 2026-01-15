@@ -226,7 +226,7 @@ Your spec and progress files are located at:
 - Progress notes: `{spec_dir}/build-progress.txt`
 - Recovery context: `{spec_dir}/memory/attempt_history.json`
 
-The project root is the parent of auto-claude/. All code goes in the project root, not in the spec directory.
+The project root is the parent of xaheen/. All code goes in the project root, not in the spec directory.
 
 ---
 
@@ -361,7 +361,7 @@ You are adding follow-up work to a **completed** spec.
 
 **Important paths:**
 - Spec directory: `{spec_dir}`
-- Project root: Parent of auto-claude/ (where code should be implemented)
+- Project root: Parent of xaheen/ (where code should be implemented)
 
 **Your task:**
 1. Read `{spec_dir}/FOLLOWUP_REQUEST.md` to understand what to add

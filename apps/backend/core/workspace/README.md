@@ -140,7 +140,7 @@ from workspace import WorkspaceMode, setup_workspace, finalize_workspace
 
 Run the import test:
 ```bash
-cd auto-claude
+cd xaheen
 python3 -c "from workspace import WorkspaceMode, setup_workspace; print('✓ Imports work')"
 ```
 

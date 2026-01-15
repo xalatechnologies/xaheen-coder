@@ -56,14 +56,14 @@ def find_project_root() -> Path:
     # Check current directory - prioritize .xaheen (installed instance)
     if (cwd / ".xaheen").exists():
         return cwd
-    if (cwd / ".auto-claude-status").exists():
+    if (cwd / ".xaheen-status").exists():
         return cwd
 
     # Walk up to find project root
     for parent in cwd.parents:
         if (parent / ".auto-claude").exists():
             return parent
-        if (parent / ".auto-claude-status").exists():
+        if (parent / ".xaheen-status").exists():
             return parent
 
     return cwd

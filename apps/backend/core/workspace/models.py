@@ -60,7 +60,7 @@ class MergeLock:
     """
     Context manager for merge locking to prevent concurrent merges.
 
-    Uses a lock file in .auto-claude/ to ensure only one merge operation
+    Uses a lock file in .xaheen/ to ensure only one merge operation
     runs at a time for a given project.
     """
 

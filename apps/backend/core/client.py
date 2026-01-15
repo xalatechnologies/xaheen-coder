@@ -837,7 +837,7 @@ def create_client(
     # - .xaheen/worktrees/tasks/{spec-name}/ (new location)
     # - .worktrees/{spec-name}/ (legacy location)
     # When running in a worktree, we need to allow access to both the worktree
-    # and the original project's .auto-claude/ directory for spec files
+    # and the original project's .xaheen/ directory for spec files
     original_project_permissions = []
     resolved_project_path = project_dir.resolve()
 
@@ -845,8 +845,8 @@ def create_client(
     # This handles spec worktrees, PR review worktrees, and legacy worktrees
     # Note: Windows paths are normalized to forward slashes before comparison
     worktree_markers = [
-        "/.auto-claude/worktrees/tasks/",  # Spec/task worktrees
-        "/.auto-claude/github/pr/worktrees/",  # PR review worktrees
+        "/.xaheen/worktrees/tasks/",  # Spec/task worktrees
+        "/.xaheen/github/pr/worktrees/",  # PR review worktrees
         "/.worktrees/",  # Legacy worktree location
     ]
     project_path_posix = str(resolved_project_path).replace("\\", "/")
@@ -861,7 +861,7 @@ def create_client(
             # Grant permissions for relevant directories in the original project
             permission_ops = ["Read", "Write", "Edit", "Glob", "Grep"]
             dirs_to_permit = [
-                original_project_dir / ".auto-claude",
+                original_project_dir / ".xaheen",
                 original_project_dir / ".worktrees",  # Legacy support
             ]
 
@@ -895,7 +895,7 @@ def create_client(
                 f"Read({spec_path_str}/**)",
                 f"Write({spec_path_str}/**)",
                 f"Edit({spec_path_str}/**)",
-                # Allow original project's .auto-claude/ and .worktrees/ directories
+                # Allow original project's .xaheen/ and .worktrees/ directories
                 # when running in a worktree (fixes issue #385 - permission errors)
                 *original_project_permissions,
                 # Bash permission granted here, but actual commands are validated
@@ -956,8 +956,8 @@ def create_client(
         mcp_servers_list.append("linear (project management)")
     if graphiti_mcp_enabled:
         mcp_servers_list.append("graphiti-memory (knowledge graph)")
-    if "auto-claude" in required_servers and auto_claude_tools_enabled:
-        mcp_servers_list.append(f"auto-claude ({agent_type} tools)")
+    if "xaheen" in required_servers and auto_claude_tools_enabled:
+        mcp_servers_list.append(f"xaheen ({agent_type} tools)")
     if mcp_servers_list:
         print(f"   - MCP servers: {', '.join(mcp_servers_list)}")
     else:
@@ -1012,11 +1012,11 @@ def create_client(
             "url": get_graphiti_mcp_url(),
         }
 
-    # Add custom auto-claude MCP server if required and available
-    if "auto-claude" in required_servers and auto_claude_tools_enabled:
+    # Add custom xaheen MCP server if required and available
+    if "xaheen" in required_servers and auto_claude_tools_enabled:
         auto_claude_mcp_server = create_auto_claude_mcp_server(spec_dir, project_dir)
         if auto_claude_mcp_server:
-            mcp_servers["auto-claude"] = auto_claude_mcp_server
+            mcp_servers["xaheen"] = auto_claude_mcp_server
 
     # Add custom MCP servers from project config
     custom_servers = mcp_config.get("CUSTOM_MCP_SERVERS", [])

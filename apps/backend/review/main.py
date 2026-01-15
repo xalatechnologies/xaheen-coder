@@ -33,7 +33,7 @@ Usage:
         state = run_review_checkpoint(spec_dir)
 
     # CLI use (for manual review)
-    python auto-claude/review.py --spec-dir auto-claude/specs/001-feature
+    python xaheen/review.py --spec-dir xaheen/specs/001-feature
 """
 
 import sys

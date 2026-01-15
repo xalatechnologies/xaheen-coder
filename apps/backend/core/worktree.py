@@ -268,7 +268,7 @@ class WorktreeManager:
 
         staged_files = result.stdout.strip().split("\n")
 
-        # Files to unstage: gitignored files + .auto-claude directory files
+        # Files to unstage: gitignored files + .xaheen directory files
         files_to_unstage = set()
 
         # 1. Check which staged files are gitignored
@@ -300,7 +300,7 @@ class WorktreeManager:
 
         if files_to_unstage:
             print(
-                f"Unstaging {len(files_to_unstage)} auto-claude/gitignored file(s)..."
+                f"Unstaging {len(files_to_unstage)} xaheen/gitignored file(s)..."
             )
             # Unstage each file
             for file in files_to_unstage:
@@ -314,12 +314,12 @@ class WorktreeManager:
 
     def get_worktree_path(self, spec_name: str) -> Path:
         """Get the worktree path for a spec (checks new and legacy locations)."""
-        # New path first (.auto-claude/worktrees/tasks/)
+        # New path first (.xaheen/worktrees/tasks/)
         new_path = self.worktrees_dir / spec_name
         if new_path.exists():
             return new_path
 
-        # Legacy fallback (.worktrees/ instead of .auto-claude/worktrees/tasks/)
+        # Legacy fallback (.worktrees/ instead of .xaheen/worktrees/tasks/)
         legacy_path = self.project_dir / ".worktrees" / spec_name
         if legacy_path.exists():
             return legacy_path
@@ -329,7 +329,7 @@ class WorktreeManager:
 
     def get_branch_name(self, spec_name: str) -> str:
         """Get the branch name for a spec."""
-        return f"auto-claude/{spec_name}"
+        return f"xaheen/{spec_name}"
 
     def worktree_exists(self, spec_name: str) -> bool:
         """Check if a worktree exists for a spec."""
@@ -362,12 +362,12 @@ class WorktreeManager:
 
     def _check_branch_namespace_conflict(self) -> str | None:
         """
-        Check if a branch named 'auto-claude' exists, which would block creating
-        branches in the 'auto-claude/*' namespace.
+        Check if a branch named 'xaheen' exists, which would block creating
+        branches in the 'xaheen/*' namespace.
 
         Git stores branch refs as files under .git/refs/heads/, so a branch named
-        'auto-claude' creates a file that prevents creating the 'auto-claude/'
-        directory needed for 'auto-claude/{spec-name}' branches.
+        'xaheen' creates a file that prevents creating the 'xaheen/'
+        directory needed for 'xaheen/{spec-name}' branches.
 
         Returns:
             The conflicting branch name if found, None otherwise.
@@ -480,14 +480,14 @@ class WorktreeManager:
         worktree_path = self.get_worktree_path(spec_name)
         branch_name = self.get_branch_name(spec_name)
 
-        # Check for branch namespace conflict (e.g., 'auto-claude' blocking 'auto-claude/*')
+        # Check for branch namespace conflict (e.g., 'xaheen' blocking 'xaheen/*')
         conflicting_branch = self._check_branch_namespace_conflict()
         if conflicting_branch:
             raise WorktreeError(
                 f"Branch '{conflicting_branch}' exists and blocks creating '{branch_name}'.\n"
                 f"\n"
-                f"Git branch names work like file paths - a branch named 'auto-claude' prevents\n"
-                f"creating branches under 'auto-claude/' (like 'auto-claude/{spec_name}').\n"
+                f"Git branch names work like file paths - a branch named 'xaheen' prevents\n"
+                f"creating branches under 'xaheen/' (like 'xaheen/{spec_name}').\n"
                 f"\n"
                 f"Fix: Rename the conflicting branch:\n"
                 f"  git branch -m {conflicting_branch} {conflicting_branch}-backup"
@@ -642,7 +642,7 @@ class WorktreeManager:
             # --no-commit stages the merge but doesn't create the commit
             merge_args.append("--no-commit")
         else:
-            merge_args.extend(["-m", f"auto-claude: Merge {info.branch}"])
+            merge_args.extend(["-m", f"xaheen: Merge {info.branch}"])
 
         result = self._run_git(merge_args)
 
@@ -735,8 +735,8 @@ class WorktreeManager:
         return worktrees
 
     def list_all_spec_branches(self) -> list[str]:
-        """List all auto-claude branches (even if worktree removed)."""
-        result = self._run_git(["branch", "--list", "auto-claude/*"])
+        """List all xaheen branches (even if worktree removed)."""
+        result = self._run_git(["branch", "--list", "xaheen/*"])
         if result.returncode != 0:
             return []
 
@@ -954,7 +954,7 @@ class WorktreeManager:
             )
 
         target = target_branch or self.base_branch
-        pr_title = title or f"auto-claude: {spec_name}"
+        pr_title = title or f"xaheen: {spec_name}"
 
         # Get PR body from spec.md if available
         pr_body = self._extract_spec_summary(spec_name)
@@ -1072,16 +1072,16 @@ class WorktreeManager:
     def _extract_spec_summary(self, spec_name: str) -> str:
         """Extract a summary from spec.md for PR body."""
         worktree_path = self.get_worktree_path(spec_name)
-        spec_path = worktree_path / ".auto-claude" / "specs" / spec_name / "spec.md"
+        spec_path = worktree_path / ".xaheen" / "specs" / spec_name / "spec.md"
 
         if not spec_path.exists():
             # Try project spec path
             spec_path = (
-                self.project_dir / ".auto-claude" / "specs" / spec_name / "spec.md"
+                self.project_dir / ".xaheen" / "specs" / spec_name / "spec.md"
             )
 
         if not spec_path.exists():
-            return "Auto-generated PR from Auto-Claude build."
+            return "Auto-generated PR from Xaheen build."
 
         try:
             content = spec_path.read_text(encoding="utf-8")

@@ -2,7 +2,7 @@
 Tool Models and Constants
 ==========================
 
-Defines tool name constants and configuration for auto-claude MCP tools.
+Defines tool name constants and configuration for xaheen MCP tools.
 
 This module is the single source of truth for all tool definitions used by
 the Claude Agent SDK client. Tool lists are organized by category:
@@ -10,7 +10,7 @@ the Claude Agent SDK client. Tool lists are organized by category:
 - Base tools: Core file operations (Read, Write, Edit, etc.)
 - Web tools: Documentation and research (WebFetch, WebSearch)
 - MCP tools: External integrations (Context7, Linear, Graphiti, etc.)
-- Auto-Claude tools: Custom build management tools
+- Xaheen tools: Custom build management tools
 """
 
 import os
@@ -28,16 +28,16 @@ BASE_WRITE_TOOLS = ["Write", "Edit", "Bash"]
 WEB_TOOLS = ["WebFetch", "WebSearch"]
 
 # =============================================================================
-# Auto-Claude MCP Tools (Custom build management)
+# Xaheen MCP Tools (Custom build management)
 # =============================================================================
 
-# Auto-Claude MCP tool names (prefixed with mcp__auto-claude__)
-TOOL_UPDATE_SUBTASK_STATUS = "mcp__auto-claude__update_subtask_status"
-TOOL_GET_BUILD_PROGRESS = "mcp__auto-claude__get_build_progress"
-TOOL_RECORD_DISCOVERY = "mcp__auto-claude__record_discovery"
-TOOL_RECORD_GOTCHA = "mcp__auto-claude__record_gotcha"
-TOOL_GET_SESSION_CONTEXT = "mcp__auto-claude__get_session_context"
-TOOL_UPDATE_QA_STATUS = "mcp__auto-claude__update_qa_status"
+# Xaheen MCP tool names (prefixed with mcp__xaheen__)
+TOOL_UPDATE_SUBTASK_STATUS = "mcp__xaheen__update_subtask_status"
+TOOL_GET_BUILD_PROGRESS = "mcp__xaheen__get_build_progress"
+TOOL_RECORD_DISCOVERY = "mcp__xaheen__record_discovery"
+TOOL_RECORD_GOTCHA = "mcp__xaheen__record_gotcha"
+TOOL_GET_SESSION_CONTEXT = "mcp__xaheen__get_session_context"
+TOOL_UPDATE_QA_STATUS = "mcp__xaheen__update_qa_status"
 
 # =============================================================================
 # External MCP Tools
@@ -190,7 +190,7 @@ AGENT_CONFIGS = {
     # ═══════════════════════════════════════════════════════════════════════
     "planner": {
         "tools": BASE_READ_TOOLS + BASE_WRITE_TOOLS + WEB_TOOLS,
-        "mcp_servers": ["context7", "graphiti", "auto-claude"],
+        "mcp_servers": ["context7", "graphiti", "xaheen"],
         "mcp_servers_optional": ["linear"],  # Only if project setting enabled
         "auto_claude_tools": [
             TOOL_GET_BUILD_PROGRESS,
@@ -201,7 +201,7 @@ AGENT_CONFIGS = {
     },
     "coder": {
         "tools": BASE_READ_TOOLS + BASE_WRITE_TOOLS + WEB_TOOLS,
-        "mcp_servers": ["context7", "graphiti", "auto-claude"],
+        "mcp_servers": ["context7", "graphiti", "xaheen"],
         "mcp_servers_optional": ["linear"],
         "auto_claude_tools": [
             TOOL_UPDATE_SUBTASK_STATUS,
@@ -219,7 +219,7 @@ AGENT_CONFIGS = {
         # Read + Write/Edit (for QA reports and plan updates) + Bash (for tests)
         # Note: Reviewer writes to spec directory only (qa_report.md, implementation_plan.json)
         "tools": BASE_READ_TOOLS + BASE_WRITE_TOOLS + WEB_TOOLS,
-        "mcp_servers": ["context7", "graphiti", "auto-claude", "browser"],
+        "mcp_servers": ["context7", "graphiti", "xaheen", "browser"],
         "mcp_servers_optional": ["linear"],  # For updating issue status
         "auto_claude_tools": [
             TOOL_GET_BUILD_PROGRESS,
@@ -230,7 +230,7 @@ AGENT_CONFIGS = {
     },
     "qa_fixer": {
         "tools": BASE_READ_TOOLS + BASE_WRITE_TOOLS + WEB_TOOLS,
-        "mcp_servers": ["context7", "graphiti", "auto-claude", "browser"],
+        "mcp_servers": ["context7", "graphiti", "xaheen", "browser"],
         "mcp_servers_optional": ["linear"],
         "auto_claude_tools": [
             TOOL_UPDATE_SUBTASK_STATUS,
@@ -374,7 +374,8 @@ def _map_mcp_server_name(
         "linear": "linear",
         "electron": "electron",
         "puppeteer": "puppeteer",
-        "auto-claude": "auto-claude",
+        "xaheen": "xaheen",
+        "auto-claude": "xaheen",  # Backward compatibility mapping
     }
     # Check if it's a known mapping
     mapped = mappings.get(name.lower().strip())
@@ -406,7 +407,7 @@ def get_required_mcp_servers(
         agent_type: The agent type identifier
         project_capabilities: Dict from detect_project_capabilities() or None
         linear_enabled: Whether Linear integration is enabled for this project
-        mcp_config: Per-project MCP server toggles from .auto-claude/.env
+        mcp_config: Per-project MCP server toggles from .xaheen/.env
                    Keys: CONTEXT7_ENABLED, LINEAR_MCP_ENABLED, ELECTRON_MCP_ENABLED,
                          PUPPETEER_MCP_ENABLED, AGENT_MCP_<agent>_ADD/REMOVE
 
@@ -480,14 +481,14 @@ def get_required_mcp_servers(
             if mapped and mapped not in servers:
                 servers.append(mapped)
 
-    # Process removals (but never remove auto-claude)
+    # Process removals (but never remove xaheen)
     if remove_key in mcp_config:
         removals = [
             s.strip() for s in str(mcp_config[remove_key]).split(",") if s.strip()
         ]
         for server in removals:
             mapped = _map_mcp_server_name(server, custom_server_ids)
-            if mapped and mapped != "auto-claude":  # auto-claude cannot be removed
+            if mapped and mapped != "xaheen" and mapped != "auto-claude":  # xaheen cannot be removed (backward compat)
                 servers = [s for s in servers if s != mapped]
 
     return servers
