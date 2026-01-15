@@ -86,7 +86,7 @@ function loadSettingsSync(): AppSettings {
 function cleanupStaleUpdateMetadata(): void {
   const userData = app.getPath('userData');
   const stalePaths = [
-    join(userData, 'auto-claude-source'),
+    join(userData, 'xaheen-source'),
     join(userData, 'backend-source'),
   ];
 
@@ -219,10 +219,10 @@ function createWindow(): void {
 }
 
 // Set app name before ready (for dock tooltip on macOS in dev mode)
-app.setName('Auto Claude');
+app.setName('Xaheen');
 if (process.platform === 'darwin') {
   // Force the name to appear in dock on macOS
-  app.name = 'Auto Claude';
+  app.name = 'Xaheen';
 }
 
 // Fix Windows GPU cache permission errors (0x5 Access Denied)

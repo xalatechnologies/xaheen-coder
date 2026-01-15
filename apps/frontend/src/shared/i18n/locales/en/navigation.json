@@ -28,7 +28,7 @@
     "help": "Help & Feedback"
   },
   "messages": {
-    "initializeToCreateTasks": "Initialize Auto Claude to create tasks"
+    "initializeToCreateTasks": "Initialize Xaheen to create tasks"
   },
   "claudeCode": {
     "checking": "Checking Claude Code...",

@@ -34,6 +34,45 @@ function formatStatusMessage(log: string): string {
 }
 
 /**
+ * Checks if a stderr message represents a benign error that can be safely ignored.
+ * Filters out expected MCP stream closure errors and other non-critical messages.
+ *
+ * @param log - Raw stderr output from backend process
+ * @returns true if the error is benign and should be filtered, false otherwise
+ */
+function isBenignError(log: string): boolean {
+  if (!log) return true;
+  
+  const lowerLog = log.toLowerCase();
+  
+  // Filter out MCP stream closure errors (expected during normal operation)
+  if (lowerLog.includes('stream closed') && 
+      (lowerLog.includes('sendrequest') || lowerLog.includes('mcp'))) {
+    return true;
+  }
+  
+  // Filter out hook callback errors related to MCP operations
+  if (lowerLog.includes('error in hook callback') && 
+      (lowerLog.includes('mcp') || lowerLog.includes('summarize') || lowerLog.includes('conversation'))) {
+    return true;
+  }
+  
+  // Filter out DevTools autofill errors (harmless browser console noise)
+  if (lowerLog.includes('autofill.enable') || lowerLog.includes('autofill.setaddresses')) {
+    return true;
+  }
+  
+  // Filter out GPU/shared image errors (common Electron rendering issues, not critical)
+  if (lowerLog.includes('shared_image_manager') || 
+      lowerLog.includes('skia_output_device') ||
+      lowerLog.includes('invalid mailbox')) {
+    return true;
+  }
+  
+  return false;
+}
+
+/**
  * Queue management for ideation and roadmap generation
  */
 export class AgentQueueManager {
@@ -245,7 +284,7 @@ export class AgentQueueManager {
   ): Promise<void> {
     debugLog('[Agent Queue] Spawning ideation process:', { projectId, projectPath });
 
-    // Run from auto-claude source directory so imports work correctly
+    // Run from xaheen source directory so imports work correctly
     const autoBuildSource = this.processManager.getAutoBuildSourcePath();
     const cwd = autoBuildSource || process.cwd();
 
@@ -296,7 +335,7 @@ export class AgentQueueManager {
     // Build final environment with proper precedence:
     // 1. process.env (system)
     // 2. pythonEnv (bundled packages environment)
-    // 3. combinedEnv (auto-claude/.env for CLI usage)
+      // 3. combinedEnv (xaheen/.env for CLI usage)
     // 4. oauthModeClearVars (clear stale ANTHROPIC_* vars when in OAuth mode)
     // 5. profileEnv (Electron app OAuth token)
     // 6. apiProfileEnv (Active API profile config - highest priority for ANTHROPIC_* vars)
@@ -316,7 +355,7 @@ export class AgentQueueManager {
     // Debug: Show OAuth token source (token values intentionally omitted for security - AC4)
     const tokenSource = profileEnv['CLAUDE_CODE_OAUTH_TOKEN']
       ? 'Electron app profile'
-      : (combinedEnv['CLAUDE_CODE_OAUTH_TOKEN'] ? 'auto-claude/.env' : 'not found');
+      : (combinedEnv['CLAUDE_CODE_OAUTH_TOKEN'] ? 'xaheen/.env' : 'not found');
     const hasToken = !!(finalEnv as Record<string, string | undefined>)['CLAUDE_CODE_OAUTH_TOKEN'];
     debugLog('[Agent Queue] OAuth token status:', {
       source: tokenSource,
@@ -383,7 +422,7 @@ export class AgentQueueManager {
 
         const typeFilePath = path.join(
           projectPath,
-          '.auto-claude',
+          '.xaheen',
           'ideation',
           `${ideationType}_ideas.json`
         );
@@ -453,7 +492,13 @@ export class AgentQueueManager {
       const log = data.toString('utf8');
       // Collect stderr for rate limit detection too
       allOutput = (allOutput + log).slice(-10000);
-      console.error('[Ideation STDERR]', log);
+      
+      // Only log non-benign errors to console to reduce noise
+      if (!isBenignError(log)) {
+        console.error('[Ideation STDERR]', log);
+      }
+      
+      // Still emit logs for activity log (filtered messages won't show as errors)
       emitLogs(log);
       this.emitter.emit('ideation-progress', projectId, {
         phase: progressPhase,
@@ -509,7 +554,7 @@ export class AgentQueueManager {
           try {
             const ideationFilePath = path.join(
               storedProjectPath,
-              '.auto-claude',
+              '.xaheen',
               'ideation',
               'ideation.json'
             );
@@ -572,7 +617,7 @@ export class AgentQueueManager {
   ): Promise<void> {
     debugLog('[Agent Queue] Spawning roadmap process:', { projectId, projectPath });
 
-    // Run from auto-claude source directory so imports work correctly
+    // Run from xaheen source directory so imports work correctly
     const autoBuildSource = this.processManager.getAutoBuildSourcePath();
     const cwd = autoBuildSource || process.cwd();
 
@@ -623,7 +668,7 @@ export class AgentQueueManager {
     // Build final environment with proper precedence:
     // 1. process.env (system)
     // 2. pythonEnv (bundled packages environment)
-    // 3. combinedEnv (auto-claude/.env for CLI usage)
+      // 3. combinedEnv (xaheen/.env for CLI usage)
     // 4. oauthModeClearVars (clear stale ANTHROPIC_* vars when in OAuth mode)
     // 5. profileEnv (Electron app OAuth token)
     // 6. apiProfileEnv (Active API profile config - highest priority for ANTHROPIC_* vars)
@@ -643,7 +688,7 @@ export class AgentQueueManager {
     // Debug: Show OAuth token source (token values intentionally omitted for security - AC4)
     const tokenSource = profileEnv['CLAUDE_CODE_OAUTH_TOKEN']
       ? 'Electron app profile'
-      : (combinedEnv['CLAUDE_CODE_OAUTH_TOKEN'] ? 'auto-claude/.env' : 'not found');
+      : (combinedEnv['CLAUDE_CODE_OAUTH_TOKEN'] ? 'xaheen/.env' : 'not found');
     const hasToken = !!(finalEnv as Record<string, string | undefined>)['CLAUDE_CODE_OAUTH_TOKEN'];
     debugLog('[Agent Queue] OAuth token status:', {
       source: tokenSource,
@@ -710,7 +755,13 @@ export class AgentQueueManager {
       const log = data.toString('utf8');
       // Collect stderr for rate limit detection too
       allRoadmapOutput = (allRoadmapOutput + log).slice(-10000);
-      console.error('[Roadmap STDERR]', log);
+      
+      // Only log non-benign errors to console to reduce noise
+      if (!isBenignError(log)) {
+        console.error('[Roadmap STDERR]', log);
+      }
+      
+      // Still emit logs for activity log (filtered messages won't show as errors)
       emitLogs(log);
       this.emitter.emit('roadmap-progress', projectId, {
         phase: progressPhase,
@@ -764,7 +815,7 @@ export class AgentQueueManager {
           try {
             const roadmapFilePath = path.join(
               storedProjectPath,
-              '.auto-claude',
+              '.xaheen',
               'roadmap',
               'roadmap.json'
             );

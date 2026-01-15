@@ -271,7 +271,7 @@ export function DevToolsStep({ onNext, onBack }: DevToolsStepProps) {
                       Why configure these?
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      When Auto Claude builds features in isolated worktrees, you can open them
+                      When Xaheen builds features in isolated worktrees, you can open them
                       directly in your preferred IDE or terminal to test and review changes.
                     </p>
                   </div>

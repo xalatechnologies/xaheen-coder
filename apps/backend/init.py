@@ -1,16 +1,16 @@
 """
 Auto Claude project initialization utilities.
 
-Handles first-time setup of .auto-claude directory and ensures proper gitignore configuration.
+Handles first-time setup of .xaheen directory and ensures proper gitignore configuration.
 """
 
 from pathlib import Path
 
 # All entries that should be added to .gitignore for auto-claude projects
 AUTO_CLAUDE_GITIGNORE_ENTRIES = [
-    ".auto-claude/",
-    ".auto-claude-security.json",
-    ".auto-claude-status",
+    ".xaheen/",
+    ".xaheen-security.json",
+    ".xaheen-status",
     ".claude_settings.json",
     ".worktrees/",
     ".security-key",
@@ -33,7 +33,7 @@ def _entry_exists_in_gitignore(lines: list[str], entry: str) -> bool:
     return False
 
 
-def ensure_gitignore_entry(project_dir: Path, entry: str = ".auto-claude/") -> bool:
+def ensure_gitignore_entry(project_dir: Path, entry: str = ".xaheen/") -> bool:
     """
     Ensure an entry exists in the project's .gitignore file.
 
@@ -41,7 +41,7 @@ def ensure_gitignore_entry(project_dir: Path, entry: str = ".auto-claude/") -> b
 
     Args:
         project_dir: The project root directory
-        entry: The gitignore entry to add (default: ".auto-claude/")
+        entry: The gitignore entry to add (default: ".xaheen/")
 
     Returns:
         True if entry was added, False if it already existed
@@ -62,14 +62,14 @@ def ensure_gitignore_entry(project_dir: Path, entry: str = ".auto-claude/") -> b
             content += "\n"
 
         # Add a comment and the entry
-        content += "\n# Auto Claude data directory\n"
+        content += "\n# Xaheen data directory\n"
         content += entry + "\n"
 
         gitignore_path.write_text(content)
         return True
     else:
         # Create new .gitignore with the entry
-        content = "# Auto Claude data directory\n"
+        content = "# Xaheen data directory\n"
         content += entry + "\n"
 
         gitignore_path.write_text(content)
@@ -114,7 +114,7 @@ def ensure_all_gitignore_entries(project_dir: Path) -> list[str]:
     if content and not content.endswith("\n"):
         content += "\n"
 
-    content += "\n# Auto Claude generated files\n"
+    content += "\n# Xaheen generated files\n"
     for entry in entries_to_add:
         content += entry + "\n"
         added_entries.append(entry)
@@ -125,7 +125,7 @@ def ensure_all_gitignore_entries(project_dir: Path) -> list[str]:
 
 def init_auto_claude_dir(project_dir: Path) -> tuple[Path, bool]:
     """
-    Initialize the .auto-claude directory for a project.
+    Initialize the .xaheen directory for a project.
 
     Creates the directory if needed and ensures all auto-claude files are in .gitignore.
 
@@ -136,7 +136,7 @@ def init_auto_claude_dir(project_dir: Path) -> tuple[Path, bool]:
         Tuple of (auto_claude_dir path, gitignore_was_updated)
     """
     project_dir = Path(project_dir)
-    auto_claude_dir = project_dir / ".auto-claude"
+    auto_claude_dir = project_dir / ".xaheen"
 
     # Create the directory if it doesn't exist
     dir_created = not auto_claude_dir.exists()
@@ -161,20 +161,20 @@ def init_auto_claude_dir(project_dir: Path) -> tuple[Path, bool]:
 
 def get_auto_claude_dir(project_dir: Path, ensure_exists: bool = True) -> Path:
     """
-    Get the .auto-claude directory path, optionally ensuring it exists.
+    Get the .xaheen directory path, optionally ensuring it exists.
 
     Args:
         project_dir: The project root directory
         ensure_exists: If True, create directory and update gitignore if needed
 
     Returns:
-        Path to the .auto-claude directory
+        Path to the .xaheen directory
     """
     if ensure_exists:
         auto_claude_dir, _ = init_auto_claude_dir(project_dir)
         return auto_claude_dir
 
-    return Path(project_dir) / ".auto-claude"
+    return Path(project_dir) / ".xaheen"
 
 
 def repair_gitignore(project_dir: Path) -> list[str]:
@@ -193,7 +193,7 @@ def repair_gitignore(project_dir: Path) -> list[str]:
         List of entries that were added (empty if all already existed)
     """
     project_dir = Path(project_dir)
-    auto_claude_dir = project_dir / ".auto-claude"
+    auto_claude_dir = project_dir / ".xaheen"
 
     # Remove the marker file so future checks will also run
     marker = auto_claude_dir / ".gitignore_checked"

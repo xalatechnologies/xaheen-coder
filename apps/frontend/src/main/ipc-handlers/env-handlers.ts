@@ -228,8 +228,8 @@ export function registerEnvHandlers(
     }
 
     // Generate content with sections
-    const content = `# Auto Claude Framework Environment Variables
-# Managed by Auto Claude UI
+    const content = `# Xaheen Framework Environment Variables
+# Managed by Xaheen UI
 
 # Claude Code OAuth Token (REQUIRED)
 CLAUDE_CODE_OAUTH_TOKEN=${existingVars['CLAUDE_CODE_OAUTH_TOKEN'] || ''}
@@ -354,7 +354,46 @@ ${existingVars['GRAPHITI_DB_PATH'] ? `GRAPHITI_DB_PATH=${existingVars['GRAPHITI_
         return { success: false, error: 'Project not initialized' };
       }
 
-      const envPath = path.join(project.path, project.autoBuildPath, '.env');
+      // Construct env path
+      let envPath = path.join(project.path, project.autoBuildPath, '.env');
+      
+      // If the file doesn't exist, try to resolve the correct path
+      // This handles cases where project.path might be incorrect or the workspace moved
+      if (!existsSync(envPath)) {
+        // Try alternative path resolutions
+        const possiblePaths = [
+          envPath, // Original path
+          path.resolve(project.path, project.autoBuildPath, '.env'), // Resolved absolute path
+        ];
+        
+        // If autoBuildPath is relative, try resolving from different base paths
+        if (!path.isAbsolute(project.autoBuildPath)) {
+          possiblePaths.push(
+            path.resolve(process.cwd(), project.autoBuildPath, '.env'), // From cwd
+            path.resolve(__dirname, '..', '..', '..', project.autoBuildPath, '.env'), // From app location
+          );
+        }
+        
+        // Find the first path that exists
+        const existingPath = possiblePaths.find(p => existsSync(p));
+        if (existingPath) {
+          envPath = existingPath;
+          // Log a warning that we're using an alternative path
+          console.warn(`[ENV_GET] Using alternative .env path: ${envPath} (original: ${path.join(project.path, project.autoBuildPath, '.env')})`);
+        } else {
+          // If still not found, return a helpful error with suggestions
+          const errorMsg = `Environment file not found at: ${path.join(project.path, project.autoBuildPath, '.env')}\n` +
+            `Tried paths:\n${possiblePaths.map(p => `  - ${p}`).join('\n')}\n` +
+            `Please verify:\n` +
+            `  1. The project path is correct: ${project.path}\n` +
+            `  2. The autoBuildPath is correct: ${project.autoBuildPath}\n` +
+            `  3. The .env file exists at: ${path.join(project.path, project.autoBuildPath, '.env')}`;
+          return {
+            success: false,
+            error: errorMsg
+          };
+        }
+      }
 
       // Load global settings for fallbacks
       let globalSettings: AppSettings = { ...DEFAULT_APP_SETTINGS };
@@ -559,7 +598,29 @@ ${existingVars['GRAPHITI_DB_PATH'] ? `GRAPHITI_DB_PATH=${existingVars['GRAPHITI_
         return { success: false, error: 'Project not initialized' };
       }
 
-      const envPath = path.join(project.path, project.autoBuildPath, '.env');
+      // Construct env path with fallback resolution
+      let envPath = path.join(project.path, project.autoBuildPath, '.env');
+      
+      // If the file doesn't exist, try alternative path resolutions
+      if (!existsSync(envPath)) {
+        const possiblePaths = [
+          envPath, // Original path
+          path.resolve(project.path, project.autoBuildPath, '.env'), // Resolved absolute path
+        ];
+        
+        if (!path.isAbsolute(project.autoBuildPath)) {
+          possiblePaths.push(
+            path.resolve(process.cwd(), project.autoBuildPath, '.env'), // From cwd
+            path.resolve(__dirname, '..', '..', '..', project.autoBuildPath, '.env'), // From app location
+          );
+        }
+        
+        const existingPath = possiblePaths.find(p => existsSync(p));
+        if (existingPath) {
+          envPath = existingPath;
+          console.warn(`[ENV_SET] Using alternative .env path: ${envPath}`);
+        }
+      }
 
       try {
         // Read existing content if file exists
