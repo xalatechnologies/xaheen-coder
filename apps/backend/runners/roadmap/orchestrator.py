@@ -41,14 +41,14 @@ class RoadmapOrchestrator:
         self.enable_competitor_analysis = enable_competitor_analysis
         self.refresh_competitor_analysis = refresh_competitor_analysis
 
-        # Default output to project's .auto-claude directory (installed instance)
-        # Note: auto-claude/ is source code, .auto-claude/ is the installed instance
+        # Default output to project's .xaheen directory (installed instance)
+        # Note: xaheen/ is source code, .xaheen/ is the installed instance
         if output_dir:
             self.output_dir = Path(output_dir)
         else:
-            # Initialize .auto-claude directory and ensure it's in .gitignore
+            # Initialize .xaheen directory and ensure it's in .gitignore
             init_auto_claude_dir(self.project_dir)
-            self.output_dir = self.project_dir / ".auto-claude" / "roadmap"
+            self.output_dir = self.project_dir / ".xaheen" / "roadmap"
 
         self.output_dir.mkdir(parents=True, exist_ok=True)
 

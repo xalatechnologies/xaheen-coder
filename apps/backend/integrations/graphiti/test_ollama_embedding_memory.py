@@ -54,7 +54,7 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 
-# Add auto-claude to path
+# Add xaheen to path
 auto_claude_dir = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(auto_claude_dir))
 

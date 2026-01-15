@@ -276,7 +276,7 @@ async def run_qa_validation_loop(
             print("\nAll acceptance criteria verified.")
             print("The implementation is production-ready.")
             print("\nNext steps:")
-            print("  1. Review the auto-claude/* branch")
+            print("  1. Review the xaheen/* branch")
             print("  2. Create a PR and merge to main")
 
             # End validation phase successfully

@@ -27,7 +27,7 @@ workspace.py             (2,295 lines) - Complex merge operations (remaining)
 
 ### models.py
 Data structures and type definitions:
-- `WorkspaceMode` - How auto-claude should work (ISOLATED/DIRECT)
+- `WorkspaceMode` - How xaheen should work (ISOLATED/DIRECT)
 - `WorkspaceChoice` - User's choice after build (MERGE/REVIEW/TEST/LATER)
 - `ParallelMergeTask` - Task for parallel file merging
 - `ParallelMergeResult` - Result of parallel merge

@@ -170,7 +170,7 @@ def get_planner_prompt(spec_dir: Path) -> str:
     if not prompt_file.exists():
         raise FileNotFoundError(
             f"Planner prompt not found at {prompt_file}\n"
-            "Make sure the auto-claude/prompts/planner.md file exists."
+            "Make sure the xaheen/prompts/planner.md file exists."
         )
 
     prompt = prompt_file.read_text()
@@ -190,7 +190,7 @@ You MUST use the Write tool to create these files in the spec directory:
 DO NOT just describe what these files should contain. You MUST actually call the Write tool
 with the file path and complete content to create them.
 
-The project root is the parent of auto-claude/. Implement code in the project root, not in the spec directory.
+The project root is the parent of xaheen/. Implement code in the project root, not in the spec directory.
 
 ---
 
@@ -213,7 +213,7 @@ def get_coding_prompt(spec_dir: Path) -> str:
     if not prompt_file.exists():
         raise FileNotFoundError(
             f"Coding prompt not found at {prompt_file}\n"
-            "Make sure the auto-claude/prompts/coder.md file exists."
+            "Make sure the xaheen/prompts/coder.md file exists."
         )
 
     prompt = prompt_file.read_text()
@@ -341,7 +341,7 @@ def get_followup_planner_prompt(spec_dir: Path) -> str:
     if not prompt_file.exists():
         raise FileNotFoundError(
             f"Follow-up planner prompt not found at {prompt_file}\n"
-            "Make sure the auto-claude/prompts/followup_planner.md file exists."
+            "Make sure the xaheen/prompts/followup_planner.md file exists."
         )
 
     prompt = prompt_file.read_text()

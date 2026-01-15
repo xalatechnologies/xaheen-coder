@@ -66,7 +66,7 @@ function getReviewKey(projectId: string, mrIid: number): string {
  * Get the GitLab directory for a project
  */
 function getGitLabDir(project: Project): string {
-  return path.join(project.path, '.auto-claude', 'gitlab');
+  return path.join(project.path, '.xaheen', 'gitlab');
 }
 
 async function waitForRebaseCompletion(

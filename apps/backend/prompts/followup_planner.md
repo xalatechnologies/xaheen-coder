@@ -253,7 +253,7 @@ Updated Plan:
 - Status: complete -> in_progress
 
 Next Steps:
-Run `python auto-claude/run.py --spec [SPEC_NUMBER]` to continue with new subtasks.
+Run `python xaheen/run.py --spec [SPEC_NUMBER]` to continue with new subtasks.
 
 === END FOLLOW-UP PLANNING ===
 ```
@@ -273,7 +273,7 @@ Status: Plan updated from 'complete' to 'in_progress'
 Next pending subtask: [subtask-id]
 
 To continue building:
-  python auto-claude/run.py --spec [SPEC_NUMBER]
+  python xaheen/run.py --spec [SPEC_NUMBER]
 
 === END SESSION ===
 ```

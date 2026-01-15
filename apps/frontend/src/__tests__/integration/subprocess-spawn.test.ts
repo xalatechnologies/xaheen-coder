@@ -59,26 +59,26 @@ vi.mock('../../main/python-detector', async (importOriginal) => {
 });
 
 // Auto-claude source path (for getAutoBuildSourcePath to find)
-const AUTO_CLAUDE_SOURCE = path.join(TEST_DIR, 'auto-claude-source');
+const XAHEEN_SOURCE = path.join(TEST_DIR, 'xaheen-source');
 
 // Setup test directories
 function setupTestDirs(): void {
   mkdirSync(TEST_PROJECT_PATH, { recursive: true });
 
-  // Create auto-claude source directory that getAutoBuildSourcePath looks for
-  mkdirSync(AUTO_CLAUDE_SOURCE, { recursive: true });
+  // Create xaheen source directory that getAutoBuildSourcePath looks for
+  mkdirSync(XAHEEN_SOURCE, { recursive: true });
 
   // Create runners subdirectory with spec_runner.py marker (used by getAutoBuildSourcePath)
-  mkdirSync(path.join(AUTO_CLAUDE_SOURCE, 'runners'), { recursive: true });
+  mkdirSync(path.join(XAHEEN_SOURCE, 'runners'), { recursive: true });
 
   // Create mock spec_runner.py in runners/ subdirectory (used as backend marker)
   writeFileSync(
-    path.join(AUTO_CLAUDE_SOURCE, 'runners', 'spec_runner.py'),
+    path.join(XAHEEN_SOURCE, 'runners', 'spec_runner.py'),
     '# Mock spec runner\nprint("Starting spec creation")'
   );
   // Create mock run.py
   writeFileSync(
-    path.join(AUTO_CLAUDE_SOURCE, 'run.py'),
+    path.join(XAHEEN_SOURCE, 'run.py'),
     '# Mock run.py\nprint("Starting task execution")'
   );
 }
@@ -113,7 +113,7 @@ describe('Subprocess Spawn Integration', () => {
       const { AgentManager } = await import('../../main/agent');
 
       const manager = new AgentManager();
-      manager.configure(undefined, AUTO_CLAUDE_SOURCE);
+      manager.configure(undefined, XAHEEN_SOURCE);
       await manager.startSpecCreation('task-1', TEST_PROJECT_PATH, 'Test task description');
 
       expect(spawn).toHaveBeenCalledWith(
@@ -125,7 +125,7 @@ describe('Subprocess Spawn Integration', () => {
           'Test task description'
         ]),
         expect.objectContaining({
-          cwd: AUTO_CLAUDE_SOURCE,  // Process runs from auto-claude source directory
+          cwd: XAHEEN_SOURCE,  // Process runs from xaheen source directory
           env: expect.objectContaining({
             PYTHONUNBUFFERED: '1'
           })
@@ -138,7 +138,7 @@ describe('Subprocess Spawn Integration', () => {
       const { AgentManager } = await import('../../main/agent');
 
       const manager = new AgentManager();
-      manager.configure(undefined, AUTO_CLAUDE_SOURCE);
+      manager.configure(undefined, XAHEEN_SOURCE);
       await manager.startTaskExecution('task-1', TEST_PROJECT_PATH, 'spec-001');
 
       expect(spawn).toHaveBeenCalledWith(
@@ -150,7 +150,7 @@ describe('Subprocess Spawn Integration', () => {
           'spec-001'
         ]),
         expect.objectContaining({
-          cwd: AUTO_CLAUDE_SOURCE  // Process runs from auto-claude source directory
+          cwd: XAHEEN_SOURCE  // Process runs from xaheen source directory
         })
       );
     });
@@ -160,7 +160,7 @@ describe('Subprocess Spawn Integration', () => {
       const { AgentManager } = await import('../../main/agent');
 
       const manager = new AgentManager();
-      manager.configure(undefined, AUTO_CLAUDE_SOURCE);
+      manager.configure(undefined, XAHEEN_SOURCE);
       await manager.startQAProcess('task-1', TEST_PROJECT_PATH, 'spec-001');
 
       expect(spawn).toHaveBeenCalledWith(
@@ -173,7 +173,7 @@ describe('Subprocess Spawn Integration', () => {
           '--qa'
         ]),
         expect.objectContaining({
-          cwd: AUTO_CLAUDE_SOURCE  // Process runs from auto-claude source directory
+          cwd: XAHEEN_SOURCE  // Process runs from xaheen source directory
         })
       );
     });
@@ -184,7 +184,7 @@ describe('Subprocess Spawn Integration', () => {
       const { AgentManager } = await import('../../main/agent');
 
       const manager = new AgentManager();
-      manager.configure(undefined, AUTO_CLAUDE_SOURCE);
+      manager.configure(undefined, XAHEEN_SOURCE);
       await manager.startTaskExecution('task-1', TEST_PROJECT_PATH, 'spec-001', {
         parallel: true,
         workers: 4
@@ -207,7 +207,7 @@ describe('Subprocess Spawn Integration', () => {
       const { AgentManager } = await import('../../main/agent');
 
       const manager = new AgentManager();
-      manager.configure(undefined, AUTO_CLAUDE_SOURCE);
+      manager.configure(undefined, XAHEEN_SOURCE);
       const logHandler = vi.fn();
       manager.on('log', logHandler);
 
@@ -223,7 +223,7 @@ describe('Subprocess Spawn Integration', () => {
       const { AgentManager } = await import('../../main/agent');
 
       const manager = new AgentManager();
-      manager.configure(undefined, AUTO_CLAUDE_SOURCE);
+      manager.configure(undefined, XAHEEN_SOURCE);
       const logHandler = vi.fn();
       manager.on('log', logHandler);
 
@@ -239,7 +239,7 @@ describe('Subprocess Spawn Integration', () => {
       const { AgentManager } = await import('../../main/agent');
 
       const manager = new AgentManager();
-      manager.configure(undefined, AUTO_CLAUDE_SOURCE);
+      manager.configure(undefined, XAHEEN_SOURCE);
       const exitHandler = vi.fn();
       manager.on('exit', exitHandler);
 
@@ -256,7 +256,7 @@ describe('Subprocess Spawn Integration', () => {
       const { AgentManager } = await import('../../main/agent');
 
       const manager = new AgentManager();
-      manager.configure(undefined, AUTO_CLAUDE_SOURCE);
+      manager.configure(undefined, XAHEEN_SOURCE);
       const errorHandler = vi.fn();
       manager.on('error', errorHandler);
 
@@ -272,7 +272,7 @@ describe('Subprocess Spawn Integration', () => {
       const { AgentManager } = await import('../../main/agent');
 
       const manager = new AgentManager();
-      manager.configure(undefined, AUTO_CLAUDE_SOURCE);
+      manager.configure(undefined, XAHEEN_SOURCE);
       await manager.startSpecCreation('task-1', TEST_PROJECT_PATH, 'Test');
 
       expect(manager.isRunning('task-1')).toBe(true);
@@ -297,7 +297,7 @@ describe('Subprocess Spawn Integration', () => {
       const { AgentManager } = await import('../../main/agent');
 
       const manager = new AgentManager();
-      manager.configure(undefined, AUTO_CLAUDE_SOURCE);
+      manager.configure(undefined, XAHEEN_SOURCE);
       expect(manager.getRunningTasks()).toHaveLength(0);
 
       await manager.startSpecCreation('task-1', TEST_PROJECT_PATH, 'Test 1');
@@ -312,7 +312,7 @@ describe('Subprocess Spawn Integration', () => {
       const { AgentManager } = await import('../../main/agent');
 
       const manager = new AgentManager();
-      manager.configure('/custom/python3', AUTO_CLAUDE_SOURCE);
+      manager.configure('/custom/python3', XAHEEN_SOURCE);
 
       await manager.startSpecCreation('task-1', TEST_PROJECT_PATH, 'Test');
 
@@ -327,7 +327,7 @@ describe('Subprocess Spawn Integration', () => {
       const { AgentManager } = await import('../../main/agent');
 
       const manager = new AgentManager();
-      manager.configure(undefined, AUTO_CLAUDE_SOURCE);
+      manager.configure(undefined, XAHEEN_SOURCE);
       await manager.startSpecCreation('task-1', TEST_PROJECT_PATH, 'Test 1');
       await manager.startTaskExecution('task-2', TEST_PROJECT_PATH, 'spec-001');
 
@@ -340,7 +340,7 @@ describe('Subprocess Spawn Integration', () => {
       const { AgentManager } = await import('../../main/agent');
 
       const manager = new AgentManager();
-      manager.configure(undefined, AUTO_CLAUDE_SOURCE);
+      manager.configure(undefined, XAHEEN_SOURCE);
       await manager.startSpecCreation('task-1', TEST_PROJECT_PATH, 'Test 1');
 
       // Start another process for same task

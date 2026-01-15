@@ -69,7 +69,7 @@ def get_allowed_tools(
         mcp_config,
     )
 
-    # Add auto-claude tools ONLY if the MCP server is available
+    # Add xaheen tools ONLY if the MCP server is available
     # This prevents allowing tools that won't work because the server isn't running
     if "auto-claude" in required_servers and is_tools_available():
         tools.extend(config.get("auto_claude_tools", []))

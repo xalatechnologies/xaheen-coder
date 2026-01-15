@@ -43,7 +43,7 @@ flatpak install --user apps/frontend/dist/Auto-Claude-*.flatpak
 ### Running from Flatpak
 
 ```bash
-flatpak run com.autoclaude.AutoClaude
+flatpak run com.xaheen.Xaheen
 ```
 
 ## Other Linux Packages

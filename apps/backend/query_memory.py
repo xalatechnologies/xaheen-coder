@@ -338,7 +338,7 @@ async def _async_semantic_search(args):
         return {"success": False, "error": "LadybugDB not installed"}
 
     try:
-        # Add auto-claude to path for imports
+        # Add xaheen to path for imports
         auto_claude_dir = Path(__file__).parent
         if str(auto_claude_dir) not in sys.path:
             sys.path.insert(0, str(auto_claude_dir))

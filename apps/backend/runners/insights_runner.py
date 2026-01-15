@@ -12,7 +12,7 @@ import json
 import sys
 from pathlib import Path
 
-# Add auto-claude to path
+# Add xaheen to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Load .env file with centralized error handling

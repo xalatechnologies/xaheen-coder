@@ -38,7 +38,7 @@ class ImplementationPlanValidator:
         if not plan_file.exists():
             errors.append("implementation_plan.json not found")
             fixes.append(
-                f"Run: python auto-claude/planner.py --spec-dir {self.spec_dir}"
+                f"Run: python xaheen/planner.py --spec-dir {self.spec_dir}"
             )
             return ValidationResult(False, "plan", errors, warnings, fixes)
 

@@ -77,9 +77,9 @@ def setup_environment() -> Path:
     Set up the environment and return the script directory.
 
     Returns:
-        Path to the auto-claude directory
+        Path to the xaheen directory
     """
-    # Add auto-claude directory to path for imports
+    # Add xaheen directory to path for imports
     script_dir = Path(__file__).parent.parent.resolve()
     sys.path.insert(0, str(script_dir))
 

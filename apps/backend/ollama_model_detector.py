@@ -527,7 +527,7 @@ def cmd_pull_model(args) -> None:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Detect and list Ollama models for auto-claude-ui"
+        description="Detect and list Ollama models for xaheen-ui"
     )
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 

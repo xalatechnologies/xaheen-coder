@@ -8,9 +8,9 @@ Analyzes project structure, understands target audience, and generates
 a strategic feature roadmap.
 
 Usage:
-    python auto-claude/roadmap_runner.py --project /path/to/project
-    python auto-claude/roadmap_runner.py --project /path/to/project --refresh
-    python auto-claude/roadmap_runner.py --project /path/to/project --output roadmap.json
+    python xaheen/roadmap_runner.py --project /path/to/project
+    python xaheen/roadmap_runner.py --project /path/to/project --refresh
+    python xaheen/roadmap_runner.py --project /path/to/project --output roadmap.json
 """
 
 import asyncio
@@ -52,7 +52,7 @@ def main():
     parser.add_argument(
         "--output",
         type=Path,
-        help="Output directory for roadmap files (default: project/auto-claude/roadmap)",
+        help="Output directory for roadmap files (default: project/xaheen/roadmap)",
     )
     parser.add_argument(
         "--model",

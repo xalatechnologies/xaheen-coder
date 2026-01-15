@@ -153,7 +153,7 @@ def handle_build_command(
                 [
                     "",
                     highlight("To review and approve:"),
-                    f"  python auto-claude/review.py --spec-dir {spec_dir}",
+                    f"  python xaheen/review.py --spec-dir {spec_dir}",
                     "",
                     muted("Or use --force to bypass this check (not recommended)."),
                 ]
@@ -278,7 +278,7 @@ def handle_build_command(
                     print(f"See: {spec_dir / 'qa_report.md'}")
                     print(f"Or:  {spec_dir / 'QA_FIX_REQUEST.md'}")
                     print(
-                        f"\nResume QA: python auto-claude/run.py --spec {spec_dir.name} --qa\n"
+                        f"\nResume QA: python xaheen/run.py --spec {spec_dir.name} --qa\n"
                     )
 
                 # Sync implementation plan to main project after QA
@@ -289,7 +289,7 @@ def handle_build_command(
                     )
             except KeyboardInterrupt:
                 print("\n\nQA validation paused.")
-                print(f"Resume: python auto-claude/run.py --spec {spec_dir.name} --qa")
+                print(f"Resume: python xaheen/run.py --spec {spec_dir.name} --qa")
                 qa_approved = False
 
         # Post-build finalization (only for isolated sequential mode)

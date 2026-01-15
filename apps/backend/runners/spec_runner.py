@@ -314,14 +314,14 @@ Examples:
                 print()
                 print(f"  {muted('To approve the spec, run:')}")
                 print(
-                    f"  {highlight(f'python auto-claude/review.py --spec-dir {orchestrator.spec_dir}')}"
+                    f"  {highlight(f'python xaheen/review.py --spec-dir {orchestrator.spec_dir}')}"
                 )
                 print()
                 print(
                     f"  {muted('Or re-run spec_runner with --auto-approve to skip review:')}"
                 )
                 example_cmd = (
-                    'python auto-claude/spec_runner.py --task "..." --auto-approve'
+                    'python xaheen/spec_runner.py --task "..." --auto-approve'
                 )
                 print(f"  {highlight(example_cmd)}")
                 sys.exit(1)
@@ -372,7 +372,7 @@ Examples:
         debug_error("spec_runner", "Spec creation interrupted by user")
         print("\n\nSpec creation interrupted.")
         print(
-            f"To continue: python auto-claude/spec_runner.py --continue {orchestrator.spec_dir.name}"
+            f"To continue: python xaheen/spec_runner.py --continue {orchestrator.spec_dir.name}"
         )
         sys.exit(1)
     except Exception as e:

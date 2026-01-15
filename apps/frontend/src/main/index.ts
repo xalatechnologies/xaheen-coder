@@ -235,7 +235,7 @@ if (process.platform === 'win32') {
 // Initialize the application
 app.whenReady().then(() => {
   // Set app user model id for Windows
-  electronApp.setAppUserModelId('com.autoclaude.ui');
+  electronApp.setAppUserModelId('com.xaheen.ui');
 
   // Clear cache on Windows to prevent permission errors from stale cache
   if (process.platform === 'win32') {
